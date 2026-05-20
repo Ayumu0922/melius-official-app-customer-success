@@ -60,7 +60,7 @@ interface Account {
   nrr: number;
   lastActivity: string;
   risk: 'low' | 'medium' | 'high';
-  owner: string;
+  owner: Record<Locale, string>;
 }
 
 interface ActivityItem {
@@ -85,7 +85,7 @@ const accounts: Account[] = [
     nrr: 119,
     lastActivity: '2h',
     risk: 'low',
-    owner: 'Mina',
+    owner: { ja: '美奈', en: 'Mina' },
   },
   {
     id: 'northbank',
@@ -98,7 +98,7 @@ const accounts: Account[] = [
     nrr: 106,
     lastActivity: '1d',
     risk: 'medium',
-    owner: 'Jun',
+    owner: { ja: '潤', en: 'Jun' },
   },
   {
     id: 'cloudline',
@@ -111,7 +111,7 @@ const accounts: Account[] = [
     nrr: 91,
     lastActivity: '5d',
     risk: 'high',
-    owner: 'Mina',
+    owner: { ja: '美奈', en: 'Mina' },
   },
   {
     id: 'luma',
@@ -124,7 +124,7 @@ const accounts: Account[] = [
     nrr: 84,
     lastActivity: '14d',
     risk: 'high',
-    owner: 'Ren',
+    owner: { ja: '蓮', en: 'Ren' },
   },
   {
     id: 'atlas',
@@ -137,7 +137,7 @@ const accounts: Account[] = [
     nrr: 122,
     lastActivity: '6h',
     risk: 'low',
-    owner: 'Kae',
+    owner: { ja: '佳恵', en: 'Kae' },
   },
   {
     id: 'vector',
@@ -150,7 +150,7 @@ const accounts: Account[] = [
     nrr: 101,
     lastActivity: '3d',
     risk: 'medium',
-    owner: 'Jun',
+    owner: { ja: '潤', en: 'Jun' },
   },
 ];
 
@@ -178,7 +178,7 @@ const activities: ActivityItem[] = [
   },
   {
     account: { ja: 'ソルスティス・クラウド', en: 'Solstice Cloud' },
-    title: { ja: '役員QBRを設定', en: 'Executive QBR scheduled' },
+    title: { ja: '役員向け四半期レビューを設定', en: 'Executive QBR scheduled' },
     time: '2h',
     tone: 'blue',
   },
@@ -217,8 +217,9 @@ const copy = {
       more: 'その他',
       toggleTheme: 'テーマを切り替え',
       notifications: '通知',
-      languageToEn: 'English',
-      languageToJa: '日本語',
+      languageToEn: '英語に切り替え',
+      languageToJa: '日本語に切り替え',
+      avatar: '顧',
     },
     accountMeta: {
       riskBadge: '要注意',
@@ -226,7 +227,7 @@ const copy = {
       lastActivity: '最終活動',
       lastActive: '最終活動',
       industries: {
-        SaaS: 'SaaS',
+        SaaS: 'サブスクソフトウェア',
         Finance: '金融',
         'Data Platform': 'データ基盤',
         Retail: '小売',
@@ -255,6 +256,7 @@ const copy = {
       new: '新規',
       search: 'アカウントを検索...',
       sort: '並び替え',
+      sortMetric: '年間経常収益',
       filters: {
         all: 'すべて',
         risk: '要注意',
@@ -274,7 +276,7 @@ const copy = {
       title: 'ポートフォリオパルス',
       subtitle: '顧客ポートフォリオの状態、リスク、拡張機会を一画面で確認します。',
       updated: 'たった今更新',
-      totalArr: '担当ARR合計',
+      totalArr: '担当年間経常収益',
       nrr: '純売上継続率',
       health: '平均ヘルススコア',
       active: '稼働アカウント',
@@ -314,12 +316,12 @@ const copy = {
       contactsSubtitle: '関係者とオーナーシップの整理',
       table: {
         product: 'プロダクト',
-        arr: 'ARR',
+        arr: '年間経常収益',
         stage: '段階',
         probability: '確度',
       },
       notes: {
-        openExpansion: '+$42K の拡張候補',
+        openExpansion: '+4.2万ドルの拡張候補',
         expansionPositive: '拡張が進行中',
         renewalPressure: '更新に注意',
         manualReview: '手動レビューが必要',
@@ -327,20 +329,20 @@ const copy = {
         championsActive: '推進者2名がアクティブ',
       },
       timelineEvents: [
-        ['更新リスクをCSMが記録', '調達部門が席数別の利用状況エクスポートを依頼', '1d'],
+        ['更新リスクを担当者が記録', '調達部門が席数別の利用状況エクスポートを依頼', '1d'],
         ['チャンピオン面談を完了', '成功条件を役員向けダッシュボード展開へ更新', '4d'],
         ['サポート滞留を解消', '製品スペシャリストが優先チケットを2件クローズ', '9d'],
         ['拡張シグナルを取得', '運用チームが分析アドオンを依頼', '13d'],
       ],
       expansionRows: [
-        ['分析プラス', '$42K', '提案中', '68%'],
-        ['管理者席', '$18K', '確認中', '41%'],
-        ['優先サポート', '$25K', '法務確認', '76%'],
+        ['分析プラス', '4.2万ドル', '提案中', '68%'],
+        ['管理者席', '1.8万ドル', '確認中', '41%'],
+        ['優先サポート', '2.5万ドル', '法務確認', '76%'],
       ],
       contactsList: [
-        { name: 'Maya Chen', role: '業務責任者', label: 'champion', icon: 'mail' },
-        { name: 'Eli Park', role: '調達担当', label: 'primary', icon: 'phone' },
-        { name: 'Noa Green', role: '管理者リード', label: 'admin', icon: 'mail' },
+        { name: '陳 真夜', role: '業務責任者', label: 'champion', icon: 'mail' },
+        { name: '朴 英理', role: '調達担当', label: 'primary', icon: 'phone' },
+        { name: '野上 乃亜', role: '管理者リード', label: 'admin', icon: 'mail' },
       ],
     },
     analytics: {
@@ -351,19 +353,19 @@ const copy = {
       forecast: '予測品質',
       table: {
         segment: 'セグメント',
-        arr: 'ARR',
+        arr: '年間経常収益',
         health: 'ヘルス',
-        nrr: 'NRR',
+        nrr: '純売上継続率',
       },
       segmentRows: [
-        ['エンタープライズ', '$1.56M', '82', '+11%'],
-        ['ミッドマーケット', '$423K', '67', '+4%'],
-        ['スタートアップ', '$92K', '63', '-2%'],
+        ['エンタープライズ', '156万ドル', '82', '+11%'],
+        ['ミッドマーケット', '42.3万ドル', '67', '+4%'],
+        ['スタートアップ', '9.2万ドル', '63', '-2%'],
       ],
       forecastRows: [
         ['更新信頼度', '91%', 'green'],
-        ['高リスクARR', '$227K', 'red'],
-        ['拡張カバレッジ', '1.8x', 'blue'],
+        ['高リスク年間経常収益', '22.7万ドル', 'red'],
+        ['拡張カバレッジ', '1.8倍', 'blue'],
       ],
     },
     settings: {
@@ -376,6 +378,8 @@ const copy = {
       light: 'ライト',
       dark: 'ダーク',
       system: 'システム',
+      japanese: '日本語',
+      english: '英語',
       healthy: '健全',
       atRisk: '要注意',
       notificationRows: ['ヘルスアラート', '週次ダイジェスト', '更新リマインダー'],
@@ -395,8 +399,9 @@ const copy = {
       more: 'More',
       toggleTheme: 'Toggle theme',
       notifications: 'Notifications',
-      languageToEn: 'English',
-      languageToJa: '日本語',
+      languageToEn: 'Switch to English',
+      languageToJa: 'Switch to Japanese',
+      avatar: 'CS',
     },
     accountMeta: {
       riskBadge: 'At Risk',
@@ -433,6 +438,7 @@ const copy = {
       new: 'New',
       search: 'Search accounts...',
       sort: 'Sort by',
+      sortMetric: 'ARR',
       filters: {
         all: 'All',
         risk: 'At Risk',
@@ -554,6 +560,8 @@ const copy = {
       light: 'Light',
       dark: 'Dark',
       system: 'System',
+      japanese: 'Japanese',
+      english: 'English',
       healthy: 'Healthy',
       atRisk: 'At risk',
       notificationRows: ['Health alerts', 'Weekly digest', 'Renewal reminders'],
@@ -589,7 +597,13 @@ function applyTheme(preference: ThemePreference) {
   document.documentElement.style.colorScheme = resolved === 'dark' ? 'dark' : 'light';
 }
 
-function formatCurrency(value: number) {
+function formatCurrency(value: number, locale: Locale) {
+  if (locale === 'ja') {
+    const tenThousands = value / 10000;
+    const precision = tenThousands >= 10 ? 0 : 1;
+    return `${tenThousands.toFixed(precision)}万ドル`;
+  }
+
   if (value >= 1000000) return `$${(value / 1000000).toFixed(2)}M`;
   return `$${Math.round(value / 1000)}K`;
 }
@@ -606,6 +620,10 @@ function localizedAccountName(account: Account, locale: Locale) {
 function localizedTier(account: Account, locale: Locale) {
   const labels = copy[locale].accountMeta.tiers as Record<string, string>;
   return labels[account.tier] ?? account.tier;
+}
+
+function localizedOwner(account: Account, locale: Locale) {
+  return account.owner[locale] ?? account.owner.en;
 }
 
 function localizedTime(time: string, locale: Locale) {
@@ -643,10 +661,12 @@ function CommandDock({
   activeView,
   setActiveView,
   labels,
+  avatarLabel,
 }: {
   activeView: View;
   setActiveView: (view: View) => void;
   labels: (typeof copy)[Locale]['nav'];
+  avatarLabel: string;
 }) {
   const items = [
     { id: 'dashboard', label: labels.dashboard, icon: LayoutDashboard },
@@ -679,7 +699,7 @@ function CommandDock({
         })}
       </nav>
       <div data-melius-ui-id="dock-user-avatar" data-melius-ui-role="avatar" className="dock-avatar">
-        CS
+        {avatarLabel}
       </div>
     </aside>
   );
@@ -752,7 +772,7 @@ function AccountList({
         </div>
         <div data-melius-ui-id="account-sort-row" data-melius-ui-role="toolbar" className="sort-row">
           <button type="button">
-            {t.sort}: <strong>ARR</strong> <ChevronDown size={13} />
+            {t.sort}: <strong>{t.sortMetric}</strong> <ChevronDown size={13} />
           </button>
           <span>{filtered.length}</span>
         </div>
@@ -792,7 +812,7 @@ function AccountList({
                   <span style={{ width: `${account.health}%` }} />
                 </span>
               </span>
-              <span className="account-row__arr">{formatCurrency(account.arr)}</span>
+              <span className="account-row__arr">{formatCurrency(account.arr, locale)}</span>
             </button>
           );
         })}
@@ -802,7 +822,7 @@ function AccountList({
         <span>
           {filtered.length} {t.count}
         </span>
-        <strong>{formatCurrency(total)}</strong>
+        <strong>{formatCurrency(total, locale)}</strong>
       </div>
     </aside>
   );
@@ -833,7 +853,7 @@ function Dashboard({ locale, selectAccount }: { locale: Locale; selectAccount: (
         <MetricTile
           dataId="metric-total-arr"
           label={t.totalArr}
-          value={formatCurrency(total)}
+          value={formatCurrency(total, locale)}
           note={t.notes.totalArr}
           icon={<DollarSign size={16} />}
         />
@@ -1011,7 +1031,7 @@ function AccountDetail({ locale, account }: { locale: Locale; account: Account }
         <div>
           <h1>{localizedAccountName(account, locale)}</h1>
           <p>
-            {t.industry}: {localizedIndustry(account, locale)} · {t.owner}: {account.owner} · {meta.lastActive}{' '}
+            {t.industry}: {localizedIndustry(account, locale)} · {t.owner}: {localizedOwner(account, locale)} · {meta.lastActive}{' '}
             {localizedTime(account.lastActivity, locale)}
           </p>
         </div>
@@ -1027,14 +1047,14 @@ function AccountDetail({ locale, account }: { locale: Locale; account: Account }
       <div data-melius-ui-id="account-metrics-grid" className="metric-grid detail">
         <MetricTile
           dataId="detail-arr-metric"
-          label="ARR"
-          value={formatCurrency(account.arr)}
+          label={t.table.arr}
+          value={formatCurrency(account.arr, locale)}
           note={t.notes.openExpansion}
           icon={<DollarSign size={16} />}
         />
         <MetricTile
           dataId="detail-nrr-metric"
-          label="NRR"
+          label={copy[locale].dashboard.nrr}
           value={`${account.nrr}%`}
           note={account.nrr >= 100 ? t.notes.expansionPositive : t.notes.renewalPressure}
           icon={account.nrr >= 100 ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
@@ -1240,10 +1260,10 @@ function SettingsView({
           <h3>{t.language}</h3>
           <div className="segmented-control" data-melius-ui-id="language-switcher" data-melius-ui-role="language-switcher">
             <SegmentButton dataId="language-ja-button" selected={locale === 'ja'} onClick={() => setLocale('ja')}>
-              日本語
+              {t.japanese}
             </SegmentButton>
             <SegmentButton dataId="language-en-button" selected={locale === 'en'} onClick={() => setLocale('en')}>
-              English
+              {t.english}
             </SegmentButton>
           </div>
         </Panel>
@@ -1338,7 +1358,7 @@ export default function App() {
   return (
     <AppSurface>
       <WorkspaceFrame>
-        <CommandDock activeView={activeView} setActiveView={setActiveView} labels={t.nav} />
+        <CommandDock activeView={activeView} setActiveView={setActiveView} labels={t.nav} avatarLabel={t.controls.avatar} />
         <AccountList
           locale={locale}
           selectedId={selectedId}
