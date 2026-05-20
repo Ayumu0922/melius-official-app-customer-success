@@ -52,6 +52,7 @@ type Health = 'green' | 'amber' | 'red' | 'blue' | 'slate';
 interface Account {
   id: string;
   name: string;
+  displayName: Record<Locale, string>;
   industry: string;
   tier: string;
   arr: number;
@@ -63,8 +64,8 @@ interface Account {
 }
 
 interface ActivityItem {
-  account: string;
-  title: string;
+  account: Record<Locale, string>;
+  title: Record<Locale, string>;
   time: string;
   tone: Health;
 }
@@ -76,6 +77,7 @@ const accounts: Account[] = [
   {
     id: 'solstice',
     name: 'Solstice Cloud',
+    displayName: { ja: 'ソルスティス・クラウド', en: 'Solstice Cloud' },
     industry: 'SaaS',
     tier: 'Enterprise',
     arr: 520000,
@@ -88,6 +90,7 @@ const accounts: Account[] = [
   {
     id: 'northbank',
     name: 'Northbank Finance',
+    displayName: { ja: 'ノースバンク金融', en: 'Northbank Finance' },
     industry: 'Finance',
     tier: 'Enterprise',
     arr: 430000,
@@ -100,6 +103,7 @@ const accounts: Account[] = [
   {
     id: 'cloudline',
     name: 'Cloudline Systems',
+    displayName: { ja: 'クラウドライン・システムズ', en: 'Cloudline Systems' },
     industry: 'Data Platform',
     tier: 'Enterprise',
     arr: 610000,
@@ -112,6 +116,7 @@ const accounts: Account[] = [
   {
     id: 'luma',
     name: 'Luma Retail',
+    displayName: { ja: 'ルマ・リテール', en: 'Luma Retail' },
     industry: 'Retail',
     tier: 'Mid-market',
     arr: 185000,
@@ -124,6 +129,7 @@ const accounts: Account[] = [
   {
     id: 'atlas',
     name: 'Atlas Health',
+    displayName: { ja: 'アトラスヘルス', en: 'Atlas Health' },
     industry: 'Healthcare',
     tier: 'Mid-market',
     arr: 238000,
@@ -136,6 +142,7 @@ const accounts: Account[] = [
   {
     id: 'vector',
     name: 'Vector Works',
+    displayName: { ja: 'ベクターワークス', en: 'Vector Works' },
     industry: 'Manufacturing',
     tier: 'Startup',
     arr: 92000,
@@ -163,15 +170,41 @@ const churnSeries = [
 ];
 
 const activities: ActivityItem[] = [
-  { account: 'Atlas Health', title: 'Security review completed', time: '6h', tone: 'green' },
-  { account: 'Solstice Cloud', title: 'Executive QBR scheduled', time: '2h', tone: 'blue' },
-  { account: 'Northbank Finance', title: 'Procurement asked for usage detail', time: '1d', tone: 'amber' },
-  { account: 'Cloudline Systems', title: 'Champion changed role', time: '5d', tone: 'red' },
-  { account: 'Vector Works', title: 'Admin training invite sent', time: '3d', tone: 'slate' },
+  {
+    account: { ja: 'アトラスヘルス', en: 'Atlas Health' },
+    title: { ja: 'セキュリティレビュー完了', en: 'Security review completed' },
+    time: '6h',
+    tone: 'green',
+  },
+  {
+    account: { ja: 'ソルスティス・クラウド', en: 'Solstice Cloud' },
+    title: { ja: '役員QBRを設定', en: 'Executive QBR scheduled' },
+    time: '2h',
+    tone: 'blue',
+  },
+  {
+    account: { ja: 'ノースバンク金融', en: 'Northbank Finance' },
+    title: { ja: '調達部門が利用詳細を依頼', en: 'Procurement asked for usage detail' },
+    time: '1d',
+    tone: 'amber',
+  },
+  {
+    account: { ja: 'クラウドライン・システムズ', en: 'Cloudline Systems' },
+    title: { ja: 'チャンピオンの役割変更を検知', en: 'Champion changed role' },
+    time: '5d',
+    tone: 'red',
+  },
+  {
+    account: { ja: 'ベクターワークス', en: 'Vector Works' },
+    title: { ja: '管理者トレーニング招待を送信', en: 'Admin training invite sent' },
+    time: '3d',
+    tone: 'slate',
+  },
 ];
 
 const copy = {
   ja: {
+    documentTitle: 'カスタマーサクセス管理テンプレート',
     product: 'Orbit CS',
     nav: {
       dashboard: 'ダッシュボード',
@@ -179,79 +212,221 @@ const copy = {
       analytics: '分析',
       settings: '設定',
     },
-    accounts: {
-      title: 'Accounts',
-      new: 'New',
-      search: 'Search accounts...',
-      sort: 'Sort by',
-      filters: {
-        all: 'All',
-        risk: 'At Risk',
-        enterprise: 'Enterprise',
-        healthy: 'Healthy',
+    controls: {
+      collapse: 'リストを閉じる',
+      more: 'その他',
+      toggleTheme: 'テーマを切り替え',
+      notifications: '通知',
+      languageToEn: 'English',
+      languageToJa: '日本語',
+    },
+    accountMeta: {
+      riskBadge: '要注意',
+      churnRisk: '解約リスク',
+      lastActivity: '最終活動',
+      lastActive: '最終活動',
+      industries: {
+        SaaS: 'SaaS',
+        Finance: '金融',
+        'Data Platform': 'データ基盤',
+        Retail: '小売',
+        Healthcare: 'ヘルスケア',
+        Manufacturing: '製造',
       },
-      count: 'accounts',
+      tiers: {
+        Enterprise: 'エンタープライズ',
+        'Mid-market': 'ミッドマーケット',
+        Startup: 'スタートアップ',
+      },
+      relativeTimes: {
+        '2h': '2時間前',
+        '6h': '6時間前',
+        '1d': '1日前',
+        '3d': '3日前',
+        '4d': '4日前',
+        '5d': '5日前',
+        '9d': '9日前',
+        '13d': '13日前',
+        '14d': '14日前',
+      },
+    },
+    accounts: {
+      title: 'アカウント',
+      new: '新規',
+      search: 'アカウントを検索...',
+      sort: '並び替え',
+      filters: {
+        all: 'すべて',
+        risk: '要注意',
+        enterprise: '大企業',
+        healthy: '健全',
+      },
+      count: '件',
     },
     topbar: {
-      dashboard: 'Portfolio Overview',
-      accounts: 'Account Command',
-      analytics: 'Analytics',
-      settings: 'Settings',
-      command: 'Search or command...',
+      dashboard: 'ポートフォリオ概要',
+      accounts: 'アカウント管理',
+      analytics: '分析',
+      settings: '設定',
+      command: '検索またはコマンド...',
     },
     dashboard: {
-      title: 'Portfolio Pulse',
+      title: 'ポートフォリオパルス',
       subtitle: '顧客ポートフォリオの状態、リスク、拡張機会を一画面で確認します。',
-      updated: 'Updated just now',
-      totalArr: 'Total Book of Business',
-      nrr: 'Net Retention Rate',
-      health: 'Avg Health Score',
-      active: 'Active Accounts',
-      chartTitle: 'Churn Prediction Radar',
-      chartSubtitle: '12-month forecast vs actual',
-      predicted: 'Predicted',
-      actual: 'Actual',
-      riskTitle: 'Accounts at Risk',
-      riskSubtitle: '早めの対応が必要な顧客',
-      activityTitle: 'Recent Activity',
-      activitySubtitle: 'Latest touchpoints across your portfolio',
-      viewAll: 'View all',
+      updated: 'たった今更新',
+      totalArr: '担当ARR合計',
+      nrr: '純売上継続率',
+      health: '平均ヘルススコア',
+      active: '稼働アカウント',
+      notes: {
+        totalArr: '+8.2% 前月比',
+        nrr: '+3.5% 前月比',
+        health: '+2.1 前月比',
+        active: '前月比 0',
+      },
+      chartTitle: '解約予測レーダー',
+      chartSubtitle: '12か月の予測と実績',
+      predicted: '予測',
+      actual: '実績',
+      months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+      riskTitle: '要注意アカウント',
+      riskSubtitle: '件の早期対応が必要',
+      activityTitle: '最近のアクティビティ',
+      activitySubtitle: 'ポートフォリオ全体の最新タッチポイント',
+      viewAll: 'すべて見る',
     },
     detail: {
-      title: 'Account Detail',
-      industry: 'Industry',
-      owner: 'Owner',
-      timeline: 'Timeline',
-      contacts: 'Contacts',
-      expansion: 'Expansion',
-      log: 'Log Activity',
-      primary: 'Primary',
-      champion: 'Champion',
-      back: 'Back',
+      title: 'アカウント詳細',
+      industry: '業種',
+      owner: '担当',
+      timeline: 'タイムライン',
+      contacts: '連絡先',
+      expansion: '拡張機会',
+      log: '活動を記録',
+      primary: '主担当',
+      champion: '推進者',
+      admin: '管理者',
+      health: 'ヘルス',
+      sentimentTitle: 'センチメントシグナル',
+      sentimentBody: '関係性の強さ、活動の新しさ、サポート負荷、拡張の動きを統合した指標です。',
+      timelineSubtitle: '最近の判断と関係性の変化',
+      expansionSubtitle: '進行中の商談と予測確度',
+      contactsSubtitle: '関係者とオーナーシップの整理',
+      table: {
+        product: 'プロダクト',
+        arr: 'ARR',
+        stage: '段階',
+        probability: '確度',
+      },
+      notes: {
+        openExpansion: '+$42K の拡張候補',
+        expansionPositive: '拡張が進行中',
+        renewalPressure: '更新に注意',
+        manualReview: '手動レビューが必要',
+        withinTarget: '目標範囲内',
+        championsActive: '推進者2名がアクティブ',
+      },
+      timelineEvents: [
+        ['更新リスクをCSMが記録', '調達部門が席数別の利用状況エクスポートを依頼', '1d'],
+        ['チャンピオン面談を完了', '成功条件を役員向けダッシュボード展開へ更新', '4d'],
+        ['サポート滞留を解消', '製品スペシャリストが優先チケットを2件クローズ', '9d'],
+        ['拡張シグナルを取得', '運用チームが分析アドオンを依頼', '13d'],
+      ],
+      expansionRows: [
+        ['分析プラス', '$42K', '提案中', '68%'],
+        ['管理者席', '$18K', '確認中', '41%'],
+        ['優先サポート', '$25K', '法務確認', '76%'],
+      ],
+      contactsList: [
+        { name: 'Maya Chen', role: '業務責任者', label: 'champion', icon: 'mail' },
+        { name: 'Eli Park', role: '調達担当', label: 'primary', icon: 'phone' },
+        { name: 'Noa Green', role: '管理者リード', label: 'admin', icon: 'mail' },
+      ],
     },
     analytics: {
-      title: 'Analytics',
+      title: '分析',
       subtitle: 'リテンション、リスク、収益拡張の傾向を確認します。',
-      cohort: 'Renewal Cohorts',
-      segments: 'Segment Health',
-      forecast: 'Forecast Quality',
+      cohort: '更新コホート',
+      segments: 'セグメント別ヘルス',
+      forecast: '予測品質',
+      table: {
+        segment: 'セグメント',
+        arr: 'ARR',
+        health: 'ヘルス',
+        nrr: 'NRR',
+      },
+      segmentRows: [
+        ['エンタープライズ', '$1.56M', '82', '+11%'],
+        ['ミッドマーケット', '$423K', '67', '+4%'],
+        ['スタートアップ', '$92K', '63', '-2%'],
+      ],
+      forecastRows: [
+        ['更新信頼度', '91%', 'green'],
+        ['高リスクARR', '$227K', 'red'],
+        ['拡張カバレッジ', '1.8x', 'blue'],
+      ],
     },
     settings: {
-      title: 'Settings',
+      title: '設定',
       subtitle: 'チーム運用に使う表示、ヘルス基準、通知のサンプル設定です。',
-      thresholds: 'Health thresholds',
-      notifications: 'Notifications',
-      language: 'Language',
-      theme: 'Theme',
+      thresholds: 'ヘルス基準',
+      notifications: '通知',
+      language: '言語',
+      theme: 'テーマ',
+      light: 'ライト',
+      dark: 'ダーク',
+      system: 'システム',
+      healthy: '健全',
+      atRisk: '要注意',
+      notificationRows: ['ヘルスアラート', '週次ダイジェスト', '更新リマインダー'],
     },
   },
   en: {
+    documentTitle: 'Customer Success Command Template',
     product: 'Orbit CS',
     nav: {
       dashboard: 'Dashboard',
       accounts: 'Accounts',
       analytics: 'Analytics',
       settings: 'Settings',
+    },
+    controls: {
+      collapse: 'Collapse list',
+      more: 'More',
+      toggleTheme: 'Toggle theme',
+      notifications: 'Notifications',
+      languageToEn: 'English',
+      languageToJa: '日本語',
+    },
+    accountMeta: {
+      riskBadge: 'At Risk',
+      churnRisk: 'Churn Risk',
+      lastActivity: 'Last activity',
+      lastActive: 'Last active',
+      industries: {
+        SaaS: 'SaaS',
+        Finance: 'Finance',
+        'Data Platform': 'Data Platform',
+        Retail: 'Retail',
+        Healthcare: 'Healthcare',
+        Manufacturing: 'Manufacturing',
+      },
+      tiers: {
+        Enterprise: 'Enterprise',
+        'Mid-market': 'Mid-market',
+        Startup: 'Startup',
+      },
+      relativeTimes: {
+        '2h': '2h',
+        '6h': '6h',
+        '1d': '1d',
+        '3d': '3d',
+        '4d': '4d',
+        '5d': '5d',
+        '9d': '9d',
+        '13d': '13d',
+        '14d': '14d',
+      },
     },
     accounts: {
       title: 'Accounts',
@@ -281,10 +456,17 @@ const copy = {
       nrr: 'Net Retention Rate',
       health: 'Avg Health Score',
       active: 'Active Accounts',
+      notes: {
+        totalArr: '+8.2% vs last month',
+        nrr: '+3.5% vs last month',
+        health: '+2.1 vs last month',
+        active: '0 vs last month',
+      },
       chartTitle: 'Churn Prediction Radar',
       chartSubtitle: '12-month forecast vs actual',
       predicted: 'Predicted',
       actual: 'Actual',
+      months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
       riskTitle: 'Accounts at Risk',
       riskSubtitle: 'Customers needing attention',
       activityTitle: 'Recent Activity',
@@ -301,7 +483,43 @@ const copy = {
       log: 'Log Activity',
       primary: 'Primary',
       champion: 'Champion',
-      back: 'Back',
+      admin: 'Admin',
+      health: 'Health',
+      sentimentTitle: 'Sentiment Signal',
+      sentimentBody: 'Relationship strength, activity recency, support load, and expansion movement combined.',
+      timelineSubtitle: 'Recent decisions and relationship movement',
+      expansionSubtitle: 'Open opportunities and forecast confidence',
+      contactsSubtitle: 'Stakeholders and ownership map',
+      table: {
+        product: 'Product',
+        arr: 'ARR',
+        stage: 'Stage',
+        probability: 'Prob.',
+      },
+      notes: {
+        openExpansion: '+$42K open expansion',
+        expansionPositive: 'Expansion positive',
+        renewalPressure: 'Renewal pressure',
+        manualReview: 'Manual review needed',
+        withinTarget: 'Within target band',
+        championsActive: '2 champions active',
+      },
+      timelineEvents: [
+        ['Renewal risk raised by CSM', 'Procurement asked for seat-level usage export', '1d'],
+        ['Champion meeting completed', 'Success criteria moved to executive dashboard rollout', '4d'],
+        ['Support backlog cleared', 'Two priority tickets closed by product specialist', '9d'],
+        ['Expansion signal captured', 'Analytics add-on requested by operations team', '13d'],
+      ],
+      expansionRows: [
+        ['Analytics Plus', '$42K', 'Proposal', '68%'],
+        ['Admin Seats', '$18K', 'Qualify', '41%'],
+        ['Priority Support', '$25K', 'Legal', '76%'],
+      ],
+      contactsList: [
+        { name: 'Maya Chen', role: 'VP Operations', label: 'champion', icon: 'mail' },
+        { name: 'Eli Park', role: 'Procurement', label: 'primary', icon: 'phone' },
+        { name: 'Noa Green', role: 'Admin Lead', label: 'admin', icon: 'mail' },
+      ],
     },
     analytics: {
       title: 'Analytics',
@@ -309,6 +527,22 @@ const copy = {
       cohort: 'Renewal Cohorts',
       segments: 'Segment Health',
       forecast: 'Forecast Quality',
+      table: {
+        segment: 'Segment',
+        arr: 'ARR',
+        health: 'Health',
+        nrr: 'NRR',
+      },
+      segmentRows: [
+        ['Enterprise', '$1.56M', '82', '+11%'],
+        ['Mid-market', '$423K', '67', '+4%'],
+        ['Startup', '$92K', '63', '-2%'],
+      ],
+      forecastRows: [
+        ['Renewal confidence', '91%', 'green'],
+        ['High-risk ARR', '$227K', 'red'],
+        ['Expansion coverage', '1.8x', 'blue'],
+      ],
     },
     settings: {
       title: 'Settings',
@@ -317,6 +551,12 @@ const copy = {
       notifications: 'Notifications',
       language: 'Language',
       theme: 'Theme',
+      light: 'Light',
+      dark: 'Dark',
+      system: 'System',
+      healthy: 'Healthy',
+      atRisk: 'At risk',
+      notificationRows: ['Health alerts', 'Weekly digest', 'Renewal reminders'],
     },
   },
 };
@@ -352,6 +592,33 @@ function applyTheme(preference: ThemePreference) {
 function formatCurrency(value: number) {
   if (value >= 1000000) return `$${(value / 1000000).toFixed(2)}M`;
   return `$${Math.round(value / 1000)}K`;
+}
+
+function localizedIndustry(account: Account, locale: Locale) {
+  const labels = copy[locale].accountMeta.industries as Record<string, string>;
+  return labels[account.industry] ?? account.industry;
+}
+
+function localizedAccountName(account: Account, locale: Locale) {
+  return account.displayName[locale] ?? account.name;
+}
+
+function localizedTier(account: Account, locale: Locale) {
+  const labels = copy[locale].accountMeta.tiers as Record<string, string>;
+  return labels[account.tier] ?? account.tier;
+}
+
+function localizedTime(time: string, locale: Locale) {
+  const labels = copy[locale].accountMeta.relativeTimes as Record<string, string>;
+  return labels[time] ?? time;
+}
+
+function contactLabel(label: string, locale: Locale) {
+  const detail = copy[locale].detail;
+  if (label === 'champion') return detail.champion;
+  if (label === 'primary') return detail.primary;
+  if (label === 'admin') return detail.admin;
+  return label;
 }
 
 function healthTone(score: number): Health {
@@ -434,6 +701,7 @@ function AccountList({
   openAccounts: () => void;
 }) {
   const t = copy[locale].accounts;
+  const meta = copy[locale].accountMeta;
   const filtered = sortedAccounts(filter);
   const total = filtered.reduce((sum, account) => sum + account.arr, 0);
   const filters = [
@@ -453,7 +721,7 @@ function AccountList({
               <Plus size={14} />
               {t.new}
             </TextButton>
-            <IconButton dataId="collapse-account-list-button" label="Collapse" roleName="button">
+            <IconButton dataId="collapse-account-list-button" label={copy[locale].controls.collapse} roleName="button">
               <PanelLeftClose size={16} />
             </IconButton>
           </div>
@@ -513,12 +781,12 @@ function AccountList({
               </span>
               <span className="account-row__content">
                 <span className="account-row__main">
-                  <strong>{account.name}</strong>
-                  {account.risk === 'high' ? <Badge tone="red">At Risk</Badge> : null}
+                  <strong>{localizedAccountName(account, locale)}</strong>
+                  {account.risk === 'high' ? <Badge tone="red">{meta.riskBadge}</Badge> : null}
                 </span>
                 <span className="account-row__meta">
-                  <span>{account.industry}</span>
-                  <span>{account.lastActivity}</span>
+                  <span>{localizedIndustry(account, locale)}</span>
+                  <span>{localizedTime(account.lastActivity, locale)}</span>
                 </span>
                 <span className="health-bar" data-tone={tone}>
                   <span style={{ width: `${account.health}%` }} />
@@ -542,6 +810,7 @@ function AccountList({
 
 function Dashboard({ locale, selectAccount }: { locale: Locale; selectAccount: (id: string) => void }) {
   const t = copy[locale].dashboard;
+  const meta = copy[locale].accountMeta;
   const total = accounts.reduce((sum, account) => sum + account.arr, 0);
   const avgNrr = Math.round(accounts.reduce((sum, account) => sum + account.nrr, 0) / accounts.length);
   const avgHealth = Math.round(accounts.reduce((sum, account) => sum + account.health, 0) / accounts.length);
@@ -565,14 +834,14 @@ function Dashboard({ locale, selectAccount }: { locale: Locale; selectAccount: (
           dataId="metric-total-arr"
           label={t.totalArr}
           value={formatCurrency(total)}
-          note="+8.2% vs last month"
+          note={t.notes.totalArr}
           icon={<DollarSign size={16} />}
         />
         <MetricTile
           dataId="metric-nrr"
           label={t.nrr}
           value={`${avgNrr}%`}
-          note="+3.5% vs last month"
+          note={t.notes.nrr}
           icon={<TrendingUp size={16} />}
           tone="green"
         />
@@ -580,7 +849,7 @@ function Dashboard({ locale, selectAccount }: { locale: Locale; selectAccount: (
           dataId="metric-health"
           label={t.health}
           value={`${avgHealth}/100`}
-          note="+2.1 vs last month"
+          note={t.notes.health}
           icon={<Activity size={16} />}
           tone="green"
         />
@@ -588,7 +857,7 @@ function Dashboard({ locale, selectAccount }: { locale: Locale; selectAccount: (
           dataId="metric-active-accounts"
           label={t.active}
           value={`${accounts.length}`}
-          note="0 vs last month"
+          note={t.notes.active}
           icon={<Users size={16} />}
         />
       </div>
@@ -611,7 +880,7 @@ function Dashboard({ locale, selectAccount }: { locale: Locale; selectAccount: (
               </span>
             </div>
           </div>
-          <ChurnChart />
+          <ChurnChart locale={locale} />
         </Panel>
 
         <Panel dataId="risk-accounts-panel" roleName="risk-list">
@@ -636,8 +905,10 @@ function Dashboard({ locale, selectAccount }: { locale: Locale; selectAccount: (
                 onClick={() => selectAccount(account.id)}
               >
                 <span>
-                  <strong>{account.name}</strong>
-                  <small>Last activity: {account.lastActivity}</small>
+                  <strong>{localizedAccountName(account, locale)}</strong>
+                  <small>
+                    {meta.lastActivity}: {localizedTime(account.lastActivity, locale)}
+                  </small>
                 </span>
                 <Badge tone={account.health < 35 ? 'red' : 'amber'}>{account.health}</Badge>
               </button>
@@ -665,17 +936,17 @@ function Dashboard({ locale, selectAccount }: { locale: Locale; selectAccount: (
         <div className="activity-grid">
           {activities.map((item) => (
             <button
-              key={`${item.account}-${item.time}`}
+              key={`${item.account.en}-${item.time}`}
               type="button"
-              data-melius-ui-id={`recent-activity-${item.account.toLowerCase().replace(/\s+/g, '-')}`}
+              data-melius-ui-id={`recent-activity-${item.account.en.toLowerCase().replace(/\s+/g, '-')}`}
               data-melius-ui-role="activity-card"
             >
               <span>
                 <HealthDot tone={item.tone} />
-                <strong>{item.account}</strong>
+                <strong>{item.account[locale]}</strong>
               </span>
-              <p>{item.title}</p>
-              <small>{item.time}</small>
+              <p>{item.title[locale]}</p>
+              <small>{localizedTime(item.time, locale)}</small>
             </button>
           ))}
         </div>
@@ -684,7 +955,8 @@ function Dashboard({ locale, selectAccount }: { locale: Locale; selectAccount: (
   );
 }
 
-function ChurnChart() {
+function ChurnChart({ locale }: { locale: Locale }) {
+  const months = copy[locale].dashboard.months;
   const max = 3.2;
   const predictedPoints = churnSeries
     .map((point, index) => {
@@ -721,7 +993,7 @@ function ChurnChart() {
       </svg>
       <div className="chart-axis">
         {churnSeries.map((point) => (
-          <span key={point.month}>{point.month}</span>
+          <span key={point.month}>{months[churnSeries.indexOf(point)]}</span>
         ))}
       </div>
     </div>
@@ -730,21 +1002,23 @@ function ChurnChart() {
 
 function AccountDetail({ locale, account }: { locale: Locale; account: Account }) {
   const t = copy[locale].detail;
+  const meta = copy[locale].accountMeta;
   const tone = healthTone(account.health);
 
   return (
     <section data-melius-ui-id="account-detail-view" data-melius-ui-role="view" className="view-stack">
       <SectionHeader data-melius-ui-id="account-detail-header">
         <div>
-          <h1>{account.name}</h1>
+          <h1>{localizedAccountName(account, locale)}</h1>
           <p>
-            {t.industry}: {account.industry} · {t.owner}: {account.owner} · Last active {account.lastActivity}
+            {t.industry}: {localizedIndustry(account, locale)} · {t.owner}: {account.owner} · {meta.lastActive}{' '}
+            {localizedTime(account.lastActivity, locale)}
           </p>
         </div>
         <div className="header-actions">
-          <Badge tone={account.tier === 'Enterprise' ? 'blue' : 'slate'}>{account.tier}</Badge>
-          {account.risk === 'high' ? <Badge tone="red">Churn Risk</Badge> : null}
-          <IconButton dataId="account-more-menu-button" label="More" roleName="button">
+          <Badge tone={account.tier === 'Enterprise' ? 'blue' : 'slate'}>{localizedTier(account, locale)}</Badge>
+          {account.risk === 'high' ? <Badge tone="red">{meta.churnRisk}</Badge> : null}
+          <IconButton dataId="account-more-menu-button" label={copy[locale].controls.more} roleName="button">
             <MoreVertical size={17} />
           </IconButton>
         </div>
@@ -755,22 +1029,22 @@ function AccountDetail({ locale, account }: { locale: Locale; account: Account }
           dataId="detail-arr-metric"
           label="ARR"
           value={formatCurrency(account.arr)}
-          note="+$42K open expansion"
+          note={t.notes.openExpansion}
           icon={<DollarSign size={16} />}
         />
         <MetricTile
           dataId="detail-nrr-metric"
           label="NRR"
           value={`${account.nrr}%`}
-          note={account.nrr >= 100 ? 'Expansion positive' : 'Renewal pressure'}
+          note={account.nrr >= 100 ? t.notes.expansionPositive : t.notes.renewalPressure}
           icon={account.nrr >= 100 ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
           tone={account.nrr >= 100 ? 'green' : 'amber'}
         />
         <MetricTile
           dataId="detail-health-metric"
-          label="Health"
+          label={t.health}
           value={`${account.health}/100`}
-          note={account.risk === 'high' ? 'Manual review needed' : 'Within target band'}
+          note={account.risk === 'high' ? t.notes.manualReview : t.notes.withinTarget}
           icon={<Activity size={16} />}
           tone={tone === 'red' ? 'red' : tone === 'amber' ? 'amber' : 'green'}
         />
@@ -778,7 +1052,7 @@ function AccountDetail({ locale, account }: { locale: Locale; account: Account }
           dataId="detail-contact-metric"
           label={t.contacts}
           value="4"
-          note="2 champions active"
+          note={t.notes.championsActive}
           icon={<Users size={16} />}
         />
       </div>
@@ -788,8 +1062,8 @@ function AccountDetail({ locale, account }: { locale: Locale; account: Account }
           <div className="sentiment-orb" data-tone={tone}>
             <span>{account.health}</span>
           </div>
-          <h3>Sentiment Signal</h3>
-          <p>Relationship strength, activity recency, support load, and expansion movement combined.</p>
+          <h3>{t.sentimentTitle}</h3>
+          <p>{t.sentimentBody}</p>
           <div className="orb-scale">
             <span />
             <span />
@@ -802,7 +1076,7 @@ function AccountDetail({ locale, account }: { locale: Locale; account: Account }
           <div className="panel-heading">
             <div>
               <h3>{t.timeline}</h3>
-              <p>Recent decisions and relationship movement</p>
+              <p>{t.timelineSubtitle}</p>
             </div>
             <TextButton dataId="log-activity-button" roleName="button">
               <Plus size={13} />
@@ -810,17 +1084,12 @@ function AccountDetail({ locale, account }: { locale: Locale; account: Account }
             </TextButton>
           </div>
           <div className="timeline-list">
-            {[
-              ['Renewal risk raised by CSM', 'Procurement asked for seat-level usage export', '1d'],
-              ['Champion meeting completed', 'Success criteria moved to executive dashboard rollout', '4d'],
-              ['Support backlog cleared', 'Two priority tickets closed by product specialist', '9d'],
-              ['Expansion signal captured', 'Analytics add-on requested by operations team', '13d'],
-            ].map(([title, body, time], index) => (
+            {t.timelineEvents.map(([title, body, time], index) => (
               <div key={title} data-melius-ui-id={`timeline-event-${index + 1}`} data-melius-ui-role="timeline-event">
                 <span />
                 <strong>{title}</strong>
                 <p>{body}</p>
-                <small>{time}</small>
+                <small>{localizedTime(time, locale)}</small>
               </div>
             ))}
           </div>
@@ -832,24 +1101,20 @@ function AccountDetail({ locale, account }: { locale: Locale; account: Account }
           <div className="panel-heading">
             <div>
               <h3>{t.expansion}</h3>
-              <p>Open opportunities and forecast confidence</p>
+              <p>{t.expansionSubtitle}</p>
             </div>
           </div>
           <table className="data-table">
             <thead>
               <tr>
-                <th>Product</th>
-                <th>ARR</th>
-                <th>Stage</th>
-                <th>Prob.</th>
+                <th>{t.table.product}</th>
+                <th>{t.table.arr}</th>
+                <th>{t.table.stage}</th>
+                <th>{t.table.probability}</th>
               </tr>
             </thead>
             <tbody>
-              {[
-                ['Analytics Plus', '$42K', 'Proposal', '68%'],
-                ['Admin Seats', '$18K', 'Qualify', '41%'],
-                ['Priority Support', '$25K', 'Legal', '76%'],
-              ].map((row) => (
+              {t.expansionRows.map((row) => (
                 <tr key={row[0]}>
                   {row.map((cell) => (
                     <td key={cell}>{cell}</td>
@@ -864,25 +1129,26 @@ function AccountDetail({ locale, account }: { locale: Locale; account: Account }
           <div className="panel-heading">
             <div>
               <h3>{t.contacts}</h3>
-              <p>Stakeholders and ownership map</p>
+              <p>{t.contactsSubtitle}</p>
             </div>
           </div>
           <div className="contact-list">
-            {[
-              { name: 'Maya Chen', role: 'VP Operations', label: t.champion, Icon: Mail },
-              { name: 'Eli Park', role: 'Procurement', label: t.primary, Icon: Phone },
-              { name: 'Noa Green', role: 'Admin Lead', label: 'Admin', Icon: Mail },
-            ].map(({ name, role, label, Icon }) => (
+            {t.contactsList.map(({ name, role, label, icon }) => {
+              const Icon = icon === 'phone' ? Phone : Mail;
+              const visibleLabel = contactLabel(label, locale);
+
+              return (
               <div key={name} data-melius-ui-id={`contact-${String(name).toLowerCase().replace(/\s+/g, '-')}`}>
                 <span>{String(name).slice(0, 2).toUpperCase()}</span>
                 <div>
                   <strong>{name}</strong>
                   <small>{role}</small>
                 </div>
-                <Badge tone={label === t.champion ? 'green' : 'slate'}>{label}</Badge>
+                <Badge tone={label === 'champion' ? 'green' : 'slate'}>{visibleLabel}</Badge>
                 <Icon size={15} />
               </div>
-            ))}
+              );
+            })}
           </div>
         </Panel>
       </div>
@@ -892,11 +1158,6 @@ function AccountDetail({ locale, account }: { locale: Locale; account: Account }
 
 function Analytics({ locale }: { locale: Locale }) {
   const t = copy[locale].analytics;
-  const rows = [
-    ['Enterprise', '$1.56M', '82', '+11%'],
-    ['Mid-market', '$423K', '67', '+4%'],
-    ['Startup', '$92K', '63', '-2%'],
-  ];
 
   return (
     <section data-melius-ui-id="analytics-view" data-melius-ui-role="view" className="view-stack">
@@ -920,14 +1181,14 @@ function Analytics({ locale }: { locale: Locale }) {
           <table className="data-table">
             <thead>
               <tr>
-                <th>Segment</th>
-                <th>ARR</th>
-                <th>Health</th>
-                <th>NRR</th>
+                <th>{t.table.segment}</th>
+                <th>{t.table.arr}</th>
+                <th>{t.table.health}</th>
+                <th>{t.table.nrr}</th>
               </tr>
             </thead>
             <tbody>
-              {rows.map((row) => (
+              {t.segmentRows.map((row) => (
                 <tr key={row[0]}>
                   {row.map((cell) => (
                     <td key={cell}>{cell}</td>
@@ -940,11 +1201,7 @@ function Analytics({ locale }: { locale: Locale }) {
         <Panel dataId="forecast-quality-panel" roleName="forecast">
           <h3>{t.forecast}</h3>
           <div className="forecast-list">
-            {[
-              ['Renewal confidence', '91%', 'green'],
-              ['High-risk ARR', '$227K', 'red'],
-              ['Expansion coverage', '1.8x', 'blue'],
-            ].map(([label, value, tone]) => (
+            {t.forecastRows.map(([label, value, tone]) => (
               <div key={label}>
                 <span>{label}</span>
                 <strong data-tone={tone}>{value}</strong>
@@ -994,13 +1251,13 @@ function SettingsView({
           <h3>{t.theme}</h3>
           <div className="segmented-control" data-melius-ui-id="theme-switcher" data-melius-ui-role="theme-switcher">
             <SegmentButton dataId="theme-light-button" selected={theme === 'light'} onClick={() => setTheme('light')}>
-              Light
+              {t.light}
             </SegmentButton>
             <SegmentButton dataId="theme-dark-button" selected={theme === 'dark'} onClick={() => setTheme('dark')}>
-              Dark
+              {t.dark}
             </SegmentButton>
             <SegmentButton dataId="theme-system-button" selected={theme === 'system'} onClick={() => setTheme('system')}>
-              System
+              {t.system}
             </SegmentButton>
           </div>
         </Panel>
@@ -1008,14 +1265,14 @@ function SettingsView({
           <h3>{t.thresholds}</h3>
           <div className="setting-bars">
             <label>
-              Healthy
+              {t.healthy}
               <span>
                 <i style={{ width: '78%' }} />
               </span>
               <strong>75+</strong>
             </label>
             <label>
-              At risk
+              {t.atRisk}
               <span>
                 <i style={{ width: '48%' }} />
               </span>
@@ -1026,7 +1283,7 @@ function SettingsView({
         <Panel dataId="settings-notifications-panel" roleName="settings-panel">
           <h3>{t.notifications}</h3>
           <div className="toggle-list">
-            {['Health alerts', 'Weekly digest', 'Renewal reminders'].map((label, index) => (
+            {t.notificationRows.map((label, index) => (
               <label key={label}>
                 <span>{label}</span>
                 <input type="checkbox" defaultChecked={index !== 1} />
@@ -1053,6 +1310,7 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.lang = locale;
+    document.title = copy[locale].documentTitle;
     try {
       localStorage.setItem(localeKey, locale);
     } catch {
@@ -1093,7 +1351,7 @@ export default function App() {
           <header data-melius-ui-id="top-command-bar" data-melius-ui-role="toolbar" className="topbar">
             <div>
               <h2>{t.topbar[activeView]}</h2>
-              {activeView === 'accounts' ? <Badge tone="blue">{selectedAccount.tier}</Badge> : null}
+              {activeView === 'accounts' ? <Badge tone="blue">{localizedTier(selectedAccount, locale)}</Badge> : null}
             </div>
             <div className="topbar__actions">
               <SearchInput
@@ -1105,7 +1363,7 @@ export default function App() {
               />
               <IconButton
                 dataId="quick-language-toggle"
-                label={locale === 'ja' ? 'English' : '日本語'}
+                label={locale === 'ja' ? t.controls.languageToEn : t.controls.languageToJa}
                 roleName="language-toggle"
                 onClick={() => setLocale(locale === 'ja' ? 'en' : 'ja')}
               >
@@ -1113,13 +1371,13 @@ export default function App() {
               </IconButton>
               <IconButton
                 dataId="quick-theme-toggle"
-                label="Toggle theme"
+                label={t.controls.toggleTheme}
                 roleName="theme-toggle"
                 onClick={() => setTheme(resolveTheme(theme) === 'dark' ? 'light' : 'dark')}
               >
                 {resolveTheme(theme) === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
               </IconButton>
-              <IconButton dataId="notifications-button" label="Notifications" roleName="button">
+              <IconButton dataId="notifications-button" label={t.controls.notifications} roleName="button">
                 <Bell size={16} />
               </IconButton>
             </div>
